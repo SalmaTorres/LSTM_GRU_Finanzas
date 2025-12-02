@@ -1,0 +1,14 @@
+# Archivo .gitignore
+# Entornos virtuales
+venv/
+.venv/
+
+# Archivos de PyTorch y Logs (opcional, pero recomendado)
+*.pth
+*.pt
+*.bin
+*.log
+
+# Directorios de PyTorch / Caches
+__pycache__/
+.ipynb_checkpoints/
