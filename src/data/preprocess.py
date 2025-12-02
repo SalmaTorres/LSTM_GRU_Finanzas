@@ -9,47 +9,77 @@ import os
 
 # 1.1. Expansión de Jerga Financiera (Slang)
 JARGON_DICT = {
+    # --- Trading y Cripto Slang ---
     'fomo': 'fear of missing out',
     'hodl': 'hold on for dear life',
     'fud': 'fear uncertainty doubt',
     'ath': 'all time high',
-    'bearish': 'bearish', # Se mantienen como palabras, pero se listan
-    'bullish': 'bullish',
-    'lol': 'laughing out loud', # Abreviaturas comunes
+    'atl': 'all time low',
+    'moom': 'money out of my money',
+    'bagholder': 'person holding a worthless asset',
+    'short squeeze': 'short position forced to buy',
+    'bullish': 'optimistic about price increase',
+    'bearish': 'pessimistic about price decrease',
+    'moon': 'massive price increase',
+    'whale': 'large market participant',
+    'rekt': 'wrecked or significant losses',
+    'lambo': 'lamborghini or great wealth',
+    'dump': 'sell off assets quickly',
+    'pump': 'artificially inflate price',
+    'ngmi': 'not gonna make it',
+    'wgmi': 'we are gonna make it',
+    'ape': 'aggressively buy high-risk asset',
+    'paper hands': 'investor who sells early',
+    'diamond hands': 'investor who holds despite volatility',
+    'dip': 'temporary price drop',
+    'btfd': 'buy the f***ing dip',
+    'gmo': 'get me out', # Menos común, pero útil
+    
+    # --- Acrónimos Comunes de Trading y Finanzas ---
+    'ipo': 'initial public offering',
+    'sec': 'securities and exchange commission',
+    'etf': 'exchange traded fund',
+    'dca': 'dollar cost averaging',
+    'reit': 'real estate investment trust',
+    'ytd': 'year to date',
+    'wtd': 'week to date',
+    'mtd': 'month to date',
+    'yoy': 'year over year',
+    'sa': 'side agreement',
+    'p/e': 'price to earnings ratio',
+    'eps': 'earnings per share',
+    'fcc': 'federal communications commission',
+    'fed': 'federal reserve',
+    'cpi': 'consumer price index',
+    'gdp': 'gross domestic product',
+    
+    # --- Análisis Técnico (TA) y Gráficos ---
+    'ema': 'exponential moving average',
+    'rsi': 'relative strength index',
+    'macd': 'moving average convergence divergence',
+    'fib': 'fibonacci retracement',
+    'sa': 'simple average',
+    
+    # --- Abreviaturas Comunes de Internet ---
+    'lol': 'laughing out loud',
     'imo': 'in my opinion',
     'imho': 'in my humble opinion',
+    'tldr': 'too long didnt read',
+    'asap': 'as soon as possible',
+    'btw': 'by the way',
+    'eod': 'end of day',
 }
 
-# 1.2. Expansión de Contracción (Manejo de I'm, isn't, etc.)
+# 1.2. Expansión de Contracción (Lógica lingüística)
 CONTRACTIONS = {
-    "i'm": "i am",
-    "you're": "you are",
-    "he's": "he is",
-    "she's": "she is",
-    "it's": "it is",
-    "we're": "we are",
-    "they're": "they are",
-    "i've": "i have",
-    "you've": "you have",
-    "we've": "we have",
-    "they've": "they have",
-    "i'll": "i will",
-    "you'll": "you will",
-    "we'll": "we will",
-    "they'll": "they will",
-    "isn't": "is not",
-    "aren't": "are not",
-    "wasn't": "was not",
-    "weren't": "were not",
-    "don't": "do not",
-    "doesn't": "does not",
-    "didn't": "did not",
-    "won't": "will not",
-    "can't": "can not",
-    "wouldn't": "would not",
-    "couldn't": "could not",
+    "i'm": "i am", "you're": "you are", "he's": "he is", "she's": "she is",
+    "it's": "it is", "we're": "we are", "they're": "they are", "i've": "i have",
+    "you've": "you have", "we've": "we have", "they've": "they have", "i'll": "i will",
+    "you'll": "you will", "we'll": "we will", "they'll": "they will", "isn't": "is not",
+    "aren't": "are not", "wasn't": "was not", "weren't": "were not", "don't": "do not",
+    "doesn't": "does not", "didn't": "did not", "won't": "will not", "can't": "can not",
+    "wouldn't": "would not", "couldn't": "could not", "y'all": "you all"
 }
-
 def expand_jargon(text):
     """Expande la jerga financiera y abreviaturas."""
     words = text.split()
