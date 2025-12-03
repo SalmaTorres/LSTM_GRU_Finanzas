@@ -25,17 +25,26 @@ def get_vocab(data_path):
     try:
         df = pd.read_csv(data_path, encoding='utf-8')
     except FileNotFoundError:
-        print(f"Error: Archivo de datos no encontrado en {data_path}")
-        raise
+        # Fallback simple si falla la ruta relativa compleja
+        if os.path.exists('data/sent_train.csv'):
+            df = pd.read_csv('data/sent_train.csv', encoding='utf-8')
+        else:
+            raise FileNotFoundError(f"No se encuentra el archivo en {data_path}")
         
     df['cleaned_text'] = df['text'].apply(clean_and_preprocess)
+    # Crear vocabulario
     word_to_index, _, vocab_size = create_vocabulary(df['cleaned_text'].tolist())
-    
     return word_to_index, vocab_size
 
 # Cargar el vocabulario una vez (Constante para la arquitectura)
-WORD_TO_INDEX, VOCAB_SIZE = get_vocab(DATA_PATH)
-PAD_INDEX = WORD_TO_INDEX['<PAD>']
+try:
+    WORD_TO_INDEX, VOCAB_SIZE = get_vocab(DATA_PATH)
+except Exception as e:
+    print(f"Advertencia cargando vocabulario: {e}")
+    WORD_TO_INDEX = {'<PAD>': 0, '<UNK>': 1}
+    VOCAB_SIZE = 2
+
+PAD_INDEX = WORD_TO_INDEX.get('<PAD>', 0)
 
 
 # ==============================================================================
@@ -47,14 +56,35 @@ class FinancialTweetDataset(Dataset):
     Clase PyTorch Dataset que convierte tweets en secuencias de índices numéricos.
     """
     def __init__(self, csv_file, vocab):
-        self.data = pd.read_csv(csv_file)
+        try:
+            df = pd.read_csv(csv_file)
+        except FileNotFoundError:
+             # Intento de ruta alternativa si se ejecuta desde raíz
+             if os.path.exists('data/sent_train.csv'):
+                 df = pd.read_csv('data/sent_train.csv')
+             else:
+                 raise
+
         self.vocab = vocab
-        # Pre-limpiamos todos los textos al inicio para eficiencia
-        self.clean_texts = self.data['text'].apply(clean_and_preprocess).tolist()
-        self.labels = self.data['label'].tolist()
+
+        # 1. Limpiar textos
+        print("Dataset: Limpiando textos...")
+        df['cleaned_text'] = df['text'].apply(clean_and_preprocess)
+        
+        # 2. FILTRADO CRÍTICO: Eliminar textos que quedaron vacíos
+        # Si 'cleaned_text' es solo espacios o vacío, su longitud split() será 0.
+        initial_len = len(df)
+        df = df[df['cleaned_text'].str.strip().astype(bool)]
+        final_len = len(df)
+        
+        if initial_len != final_len:
+            print(f"Se eliminaron {initial_len - final_len} tweets vacíos o corruptos.")
+        
+        self.clean_texts = df['cleaned_text'].tolist()
+        self.labels = df['label'].tolist()
         
     def __len__(self):
-        return len(self.data)
+        return len(self.clean_texts)
 
     def __getitem__(self, idx):
         # Obtener texto limpio y etiqueta
@@ -64,6 +94,10 @@ class FinancialTweetDataset(Dataset):
         # Convertir a secuencia de índices numéricos (usando UNK si es necesario)
         sequence = text_to_sequence(text, self.vocab)
         
+        # Salvaguarda final: si por alguna razón sigue vacío, poner <UNK>
+        if len(sequence) == 0:
+            sequence = [self.vocab.get('<UNK>', 1)]
+
         # Devolver la secuencia como un tensor y la etiqueta
         return torch.tensor(sequence, dtype=torch.long), torch.tensor(label, dtype=torch.long)
 

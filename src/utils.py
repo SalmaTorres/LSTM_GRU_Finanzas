@@ -22,22 +22,22 @@ def save_checkpoint(model, optimizer, epoch, loss, filename):
         } if hasattr(model, 'lstm') else {} # Checkeo simple para evitar errores
     }
     torch.save(checkpoint, filename)
-    print(f"💾 Checkpoint guardado en: {filename}")
+    print(f"Checkpoint guardado en: {filename}")
 
 def load_checkpoint(model, optimizer, filename, device):
     """Carga un checkpoint previo."""
     if os.path.isfile(filename):
-        print(f"📂 Cargando checkpoint '{filename}'...")
+        print(f"Cargando checkpoint '{filename}'...")
         checkpoint = torch.load(filename, map_location=device)
         model.load_state_dict(checkpoint['model_state_dict'])
         if optimizer:
             optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         epoch = checkpoint['epoch']
         loss = checkpoint['loss']
-        print(f"✅ Cargado. Época: {epoch}, Loss: {loss:.4f}")
+        print(f"Cargado. Época: {epoch}, Loss: {loss:.4f}")
         return epoch, loss
     else:
-        print(f"⚠️ No se encontró checkpoint en '{filename}'")
+        print(f"No se encontró checkpoint en '{filename}'")
         return 0, float('inf')
 
 def visualize_attention(words, weights, title="Atención del Modelo"):
