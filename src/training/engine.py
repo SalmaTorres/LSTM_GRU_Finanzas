@@ -183,7 +183,7 @@ def run_training(
 # --- 4. ORQUESTADOR DE EXPERIMENTOS ---
 def run_all_experiments():
     print("==========================================================")
-    print("INICIANDO BATERÍA DE EXPERIMENTOS (SEGÚN LISTA)")
+    print("INICIANDO BATERÍA DE EXPERIMENTOS")
     print("==========================================================")
     
     experiments_config = [

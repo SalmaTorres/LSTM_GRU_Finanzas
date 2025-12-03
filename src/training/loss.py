@@ -33,11 +33,11 @@ def get_class_weights(data_path=DATA_PATH):
                 weight = 1.0 # Fallback
             weights.append(weight)
             
-        print(f"⚖️ Pesos de Clase Calculados: {weights}")
+        print(f"Pesos de Clase Calculados: {weights}")
         return torch.tensor(weights, dtype=torch.float)
         
     except Exception as e:
-        print(f"⚠️ Error calculando pesos: {e}. Usando pesos iguales.")
+        print(f"Error calculando pesos: {e}. Usando pesos iguales.")
         return torch.ones(3)
 
 def get_loss_function(device):

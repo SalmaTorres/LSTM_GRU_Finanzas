@@ -46,7 +46,7 @@ class LSTMClassifier(nn.Module):
         embedded = self.dropout(self.embedding(text))
         
         # Pack
-        packed_embedded = pack_padded_sequence(embedded, text_lengths.cpu(), batch_first=True, enforce_sorted=True)
+        packed_embedded = pack_padded_sequence(embedded, text_lengths.cpu(), batch_first=True, enforce_sorted=False)
         
         # LSTM
         packed_output, (hidden, cell) = self.lstm(packed_embedded)

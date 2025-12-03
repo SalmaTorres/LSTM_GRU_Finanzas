@@ -28,4 +28,4 @@ class EnsembleModel(nn.Module):
         # Puedes dar más peso a uno si quieres: (lstm_probs * 0.7) + (gru_probs * 0.3)
         ensemble_probs = (lstm_probs + gru_probs) / 2.0
         
-        return ensemble_probs
+        return ensemble_probs, None

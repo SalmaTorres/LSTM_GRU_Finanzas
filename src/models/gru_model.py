@@ -41,7 +41,7 @@ class GRUClassifier(nn.Module):
     def forward(self, text, text_lengths):
         embedded = self.dropout(self.embedding(text))
         
-        packed_embedded = pack_padded_sequence(embedded, text_lengths.cpu(), batch_first=True, enforce_sorted=True)
+        packed_embedded = pack_padded_sequence(embedded, text_lengths.cpu(), batch_first=True, enforce_sorted=False)
         
         # GRU solo devuelve hidden, no cell
         packed_output, hidden = self.gru(packed_embedded)
